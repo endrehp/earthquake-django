@@ -1,0 +1,22 @@
+<html>
+    {% load static %}
+	<head>
+		<meta charset='utf-8' />
+		<title>SkyAlert</title>
+		<link type= "text/css" rel = "stylesheet"
+			  href = "{% static 'home/main.css'%}" >
+		
+	</head>
+	<body>
+		<div class = "buttons">
+			<a href = ""><button id = "private">Private</button></a>
+			<a href = ""><button id = "public">Public</button></a>
+            <a href = "{% url 'editpublic' %}"><button id = "editpublic">Edit Public</button></a>
+             <a href = "{% url 'data' %}"><button id = "upload">Data</button></a>
+		
+		</div>
+	
+	</body>
+
+
+</html>

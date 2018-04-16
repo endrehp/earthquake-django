@@ -1,0 +1,91 @@
+
+
+
+
+<h1>Upload Data</h1>
+{% load static %}
+<link type= "text/css" rel = "stylesheet"
+			  href = "{% static 'data/style.css'%}" >
+<form method='POST' action="{% url 'data' %}" enctype="multipart/form-data">
+{% csrf_token %}
+
+<br />
+Date (MM-DD-YYYY):
+<br />
+<input type='text' name='title' />
+    
+<br />
+Magnitude:
+<br />
+<input type='text' name='magnitude' />
+
+<br />
+<br />
+Epsienter information:
+<br />
+Longitude
+<br />
+<input type='text' name='epi_lon' />
+
+<br />
+Latitude
+<br />
+<input type='text' name='epi_lat' />
+
+
+    
+<br />
+Excel data:
+<br />
+<input type='file' name='excel_data' />
+
+    
+<input class='btn btn-primary' type='submit' value='Upload' /> 
+</form>
+
+<a href="{% url 'home' %}">Return to home</a>
+
+{% if error %}
+<br />
+{{error}}
+<br />
+{% endif %}
+
+{% if message %}
+<br />
+{{message}}
+<br />
+{% endif %}
+
+
+
+{% if earthquakes %}
+<!--
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu"/>
+    <i class="fa fa-remove"></i>
+-->
+<div style='overflow-y:auto;'>
+<table >
+<tr id='header_row'>
+    <td>Magnitude</td>
+    <td>Date</td>
+    </tr>
+<!-- <table id='earthquake_table'> -->
+{% for earthquake in earthquakes.all reversed %}
+<!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
+    
+    
+    <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
+    
+    <td>{{earthquake.magnitude}}   </td>
+    <td>{{earthquake.title}}   </td>
+
+    <td hidden>  <label class='url'> {{earthquake.url}} </label> </td>
+
+</tr>
+
+{% endfor %}
+</table>
+    
+{% endif %}
