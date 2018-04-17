@@ -54,7 +54,7 @@ def data_processing(excel_file, date):
     #Get cluster
     #http://localhost:8000/static/python_scripts/all_sensors.csv
     #all_sensors=pd.read_csv("{% static 'python_scripts/all_sensors.csv' %}")
-    all_sensors=pd.read_csv("http://localhost:8000/static/python_scripts/all_sensors.csv")
+    all_sensors=pd.read_csv("static/python_scripts/all_sensors.csv")
     #all_sensors=pd.read_csv('all_sensors.csv')
 
     clusters = list(np.zeros(len(df)))
@@ -213,6 +213,7 @@ def data_processing(excel_file, date):
             geojson.dump(geojson.FeatureCollection(features), fp, sort_keys=True, ensure_ascii=False)
 
     data2geojson_public(only_max)
+    data2geojson_private(all_concat)
     print('geojson laget')
     #f = open('public_' + date + '.geojson', 'r') 
     #return File(f)

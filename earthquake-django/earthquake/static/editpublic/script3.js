@@ -30,7 +30,7 @@ function changeHiddenInput2(objDropDown) {
 
 var modes = ['public', 'private'];
 
-var earthquakeDate = '02-17-2018';
+
 var mode = 'public';
 var l = 0;
 var v =[];
@@ -42,6 +42,7 @@ var b;
 var a;
 var endTime = 700;
 var speed = 10;
+var title;
 
  
 
@@ -67,11 +68,18 @@ map.on('load', function() {
     }
         
     l += 1
+        
+    if (mode == 'private') {
+        url = 'media/private_' + title + '.geojson';
+    }
+    else {
+        url = 'media/public_' + title + '.geojson';
+    }
     //url = mode + '_' + earthquakeDate;
     //url
     //a = $.getJSON(url + '.geojson', function (data) {
     //b = data;})
-    document.getElementById('date').textContent = earthquakeDate; 
+    //document.getElementById('date').textContent = earthquakeDate; 
     //setEndTime();
     speed = document.getElementById('speed').value;
     
@@ -239,7 +247,7 @@ function private_version() {
       type: 'circle',
       source: {
         type: 'geojson',
-        data: url//'./' + url + '.geojson' // replace this with the url of your own geojson
+        data: url,//'./' + url + '.geojson' // replace this with the url of your own geojson
       },
       paint: {
         'circle-radius': 6,
@@ -321,6 +329,7 @@ function private_version() {
 function select_earthquake(e) {
     
     
+    
     for (var i=0; i < document.getElementsByClassName('table_row').length; i++){
         //console.log(document.getElementsByClassName('table_row')[i].innerHTML)
         document.getElementsByClassName('table_row')[i].style.background = 'white';
@@ -332,16 +341,21 @@ function select_earthquake(e) {
     e.style.background = 'black';
     e.style.color = 'white';
     
+    title = e.getElementsByClassName('title')[0].innerText;
+    
+    
     //var p = document.getElementById('para');
     //p.innerHTML = 'You clicked on cell:' + ' ' + e.innerText;
     //console.log(e.innerText)
     //console.log(e.innerHTML)
+    /*
     if (mode == 'private') {
         url = e.getElementsByClassName('private_url')[0].innerText;    
     }
     else {
         url = e.getElementsByClassName('public_url')[0].innerText;
     }
+    */
     //url = 'media/public_' + e.innerText + '.geojson';
     //console.log(e.innerText)
     //html_string = e.innerHTML;

@@ -18,7 +18,7 @@
 
 <div id='map'></div>
     
-<script src="{% static 'editpublic/script2.js' %}"></script>  
+<script src="{% static 'editpublic/script3.js' %}"></script>  
 <div class='container' >
 
     </div>    
@@ -27,7 +27,7 @@
 <div id='console'>
   <img src="{% static 'editpublic/skyalert_logo.png'  %}" alt="logo" width="130" height="70">
 <a id='home_button' href="{% url 'home' %}">Home</a>
-    <h2> Date: <label id='date'> </label></h2>
+
 
     
 <button class="btn"><i class="ion-ios-plus-outline"></i></button>
@@ -61,7 +61,7 @@
     <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
     
     <td >{{earthquake.magnitude}}   </td>
-    <td>{{earthquake.title}}   </td>
+    <td class='title'>{{earthquake.title}}   </td>
 
     <td hidden>  <label class='public_url'> {{earthquake.public_url}} </label> </td>
     <td hidden>  <label class='private_url'> {{earthquake.private_url}} </label> </td>
