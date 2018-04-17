@@ -21,9 +21,13 @@ import earthquake_map.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', earthquake_map.views.home, name='home'),
+    path('', earthquake_map.views.public, name='public'),
+    path('admin_home/', earthquake_map.views.admin_home, name='admin_home'),
     path('data/', earthquake_map.views.data, name='data'),
-    path('editpublic', earthquake_map.views.editpublic, name='editpublic'),
+    path('editpublic/', earthquake_map.views.editpublic, name='editpublic'),
+    path('analysis/', earthquake_map.views.analysis, name='analysis'),
+    path('login/', earthquake_map.views.login, name='login'),
+    path('logout/', earthquake_map.views.logout, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

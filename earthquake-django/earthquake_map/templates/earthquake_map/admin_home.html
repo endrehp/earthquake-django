@@ -9,10 +9,15 @@
 	</head>
 	<body>
 		<div class = "buttons">
-			<a href = ""><button id = "private">Private</button></a>
-			<a href = ""><button id = "public">Public</button></a>
+			<a href = "{% url 'analysis' %}"><button id = "private">Analysis</button></a>
+			<a href = "{% url 'public' %}"><button id = "public">Public</button></a>
             <a href = "{% url 'editpublic' %}"><button id = "editpublic">Edit Public</button></a>
              <a href = "{% url 'data' %}"><button id = "upload">Data</button></a>
+            <a class="nav-item nav-link" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
+        <form id='logout' method='POST' action="{% url 'logout' %}">
+        {% csrf_token %}
+            <input type='hidden' />
+        </form> 
 		
 		</div>
 	

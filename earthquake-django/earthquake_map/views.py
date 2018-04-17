@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from .forms import UploadFileForm
 from django.conf.urls.static import static
 from static.python_scripts.data_processing import data_processing
 from .models import Earthquake_object
 from django.core.files import File
+from django.contrib.auth.models import User
+from django.contrib import auth 
 
 #from django.templatetags.static import static
 
@@ -15,8 +16,18 @@ import pandas as pd
 import geojson
 
 # Create your views here.
-def home(request):
-    return render(request, 'earthquake_map/home.html')
+def admin_home(request):
+    return render(request, 'earthquake_map/admin_home.html')
+
+def public(request):
+    earthquakes = Earthquake_object.objects
+    return render(request, 'earthquake_map/public/index_public.html',{'earthquakes': earthquakes})
+
+def analysis(request):
+    earthquakes = Earthquake_object.objects
+    return render(request, 'earthquake_map/analysis/index_analysis.html',{'earthquakes': earthquakes})
+
+
 
 def data(request):
     earthquakes = Earthquake_object.objects
@@ -79,3 +90,29 @@ def upload_file(request):
     return render(request, 'upload.html', {'form': form})
 
 '''
+
+
+
+
+def login(request):
+    
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    else:
+
+        if request.method == 'POST':
+            user = auth.authenticate(username=request.POST['username'], password=request.POST['password'])
+
+            if user is not None:
+                auth.login(request, user)
+                return redirect('admin_home')
+            else:
+                return render(request, 'earthquake_map/login/login.html', {'error': 'username or password is wrong'})
+        else:
+            return render(request, 'earthquake_map/login/login.html')
+
+def logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+        return redirect('public')
