@@ -7,6 +7,7 @@ from .models import Earthquake_object
 from django.core.files import File
 from django.contrib.auth.models import User
 from django.contrib import auth 
+from django.contrib.auth.decorators import login_required
 
 #from django.templatetags.static import static
 
@@ -16,6 +17,7 @@ import pandas as pd
 import geojson
 
 # Create your views here.
+@login_required
 def admin_home(request):
     return render(request, 'earthquake_map/admin_home.html')
 
@@ -23,12 +25,13 @@ def public(request):
     earthquakes = Earthquake_object.objects
     return render(request, 'earthquake_map/public/index_public.html',{'earthquakes': earthquakes})
 
+@login_required
 def analysis(request):
     earthquakes = Earthquake_object.objects
     return render(request, 'earthquake_map/analysis/index_analysis.html',{'earthquakes': earthquakes})
 
 
-
+@login_required
 def data(request):
     earthquakes = Earthquake_object.objects
     if request.method == 'POST':
@@ -64,6 +67,7 @@ def data(request):
         else:
             return render(request, 'earthquake_map/data.html')
 
+@login_required
 def editpublic(request):
     earthquakes = Earthquake_object.objects
     
