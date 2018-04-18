@@ -82,9 +82,9 @@
 <input id='speed' type="number" name="speed" value="10", min="1", max="20" >    
 </form>
     
-<<<<<<< HEAD:earthquake-django/earthquake_map/templates/earthquake_map/edit/index.html
+
 	
-	<form method ='POST' action = "{%url 'editpublic' %}" enctype="multipart/form-data" hidden>
+	<form method ='POST' action = "{%url 'edit_public' %}" enctype="multipart/form-data" hidden>
 		{% csrf_token %}
 		<input type = "text" id = "sn" name = "serial_number" />
 		<input type = "text" id = "url" name = "url" />	
@@ -93,7 +93,7 @@
 		<input  type="submit" name = "action" value = "remove" id = "remove" />	
 		<input type = "submit" name = "action" value = "export"  id = "export" />
 	</form>
-=======
+
 <form name="epicenter_speedinput">
 <h1>Epicenter Speed</h1>
 <input id='epi_speed' type="number" value="1", min="0", max="10" >    
@@ -103,7 +103,6 @@
 <input id='epi_delay' type="number" value="0", min="0", max="59" >    
 </form>
     
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208:earthquake-django/earthquake_map/templates/earthquake_map/editpublic/index.html
 </div>
 	
 	
