@@ -189,7 +189,7 @@ def data_processing(excel_file, date, epi_lon, epi_lat):
                                                 '</p> <p> Intensity: '+str(X['s_gal'])+'</p>'
                                                )))
         df.apply(insert_features, axis=1)
-        with open('private_' + date + '.geojson', 'w', encoding='utf8') as fp:
+        with open('media/private_' + date + '.geojson', 'w', encoding='utf8') as fp:
             geojson.dump(geojson.FeatureCollection(features), fp, sort_keys=True, ensure_ascii=False)
 
 

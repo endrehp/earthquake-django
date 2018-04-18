@@ -9,7 +9,7 @@
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="{% static 'editpublic/style.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'analysis/style.css' %}">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
 <div id='map'></div>
     
-<script src="{% static 'analysis/script_analysis.js' %}"></script>  
+<script src="{% static 'analysis/script_analysis2.js' %}"></script>  
 <div class='container' >
 
     </div>    
@@ -40,12 +40,6 @@
     
 
 {% if earthquakes %}
-<!--
-<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu"/>
-    <i class="fa fa-remove"></i>
--->
-
 
 <div style='overflow-y:auto;'>
 <table >
@@ -53,11 +47,8 @@
     <td>Magnitude</td>
     <td>Date</td>
     </tr>
-<!-- <table id='earthquake_table'> -->
-{% for earthquake in earthquakes.all reversed %}
-<!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
-    
-    
+
+{% for earthquake in earthquakes.all reversed %}    
     <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
     
     <td >{{earthquake.magnitude}}   </td>
@@ -77,27 +68,14 @@
 </div>
 
     
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    
-
-<div id="result"> </div>    
-    
-<form method="post">
-    <h1>Mode</h1>
-    <select id="dropdown2" name="dropdown2" onchange="changeHiddenInput2(this)">
-    
-    </select>
-    <input type="hidden" name="hiddenInput2" id="hiddenInput2" value="" />
-</form>
 <form name="speedinput">
 <h1>Speed</h1>
 <input id='speed' type="number" name="speed" value="10", min="1", max="20" >    
 </form>
     
 </div>
-<button class='new-data'><i class="ion-ios-plus-outline"></i>Load</button>    
+<button class='new-data' id="load" hidden><i class="ion-ios-plus-outline"></i>Load</button>    
 
     
 

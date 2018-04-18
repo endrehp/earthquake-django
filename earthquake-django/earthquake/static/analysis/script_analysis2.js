@@ -2,36 +2,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZW5kcmVocCIsImEiOiJjamRsNmlvZjYwM3RqMnhwOGRne
 
 console.log('begynn igjen')
 
-    
-var select;
-//var select2;
-window.onload = function () {
-
-    
-    select2 = document.getElementById('dropdown2');
-    for(var i = 0; i < modes.length ; i++) {
-        var option = document.createElement('option');
-        option.text = option.value = modes[i];
-        select2.add(option, 0);
-    }
-}
-
-
-
-
-function changeHiddenInput2(objDropDown) {
-    //console.log(objDropDown);
-    var objHidden = document.getElementById("hiddenInput2");
-    objHidden.value = objDropDown.value;
-    var a = objHidden.value;
-    mode= a;
-}
-
-
-var modes = ['public', 'private'];
-
-
-var mode = 'public';
 var l = 0;
 var v =[];
 var i;
@@ -51,7 +21,6 @@ var map = new mapboxgl.Map({
   style: 'mapbox://styles/mapbox/light-v9',
   center: [-98.2022, 16.6855], // initial map center in [lon, lat]
   zoom: 5.5,
-  maxZoom: 8
 });
 
 
@@ -64,36 +33,19 @@ map.on('load', function() {
     if (l > 0) {
     map.removeLayer('earthquake' + l);
     map.removeLayer('act' + l)
-    
-    }
-        
-    l += 1
-        
-    if (mode == 'private') {
-        url = 'media/private_' + title + '.geojson';
-    }
-    else {
-        url = 'media/public_' + title + '.geojson';
-    }
-    //url = mode + '_' + earthquakeDate;
-    //url
-    //a = $.getJSON(url + '.geojson', function (data) {
-    //b = data;})
-    //document.getElementById('date').textContent = earthquakeDate; 
-    //setEndTime();
+    } ;
+    l += 1;
+    url = 'media/private_' + title + '.geojson';
     speed = document.getElementById('speed').value;
-    
     console.log('legg til noe')
     add_data()
-    
     });
     
     
 document.getElementById('slider').addEventListener('input', function(e) {
-  Time = parseInt(e.target.value);
+    Time = parseInt(e.target.value);
     i = Time;
-  // update the map
-  updateLayer(Time)  
+    updateLayer(Time)  
 });
 
 
@@ -161,53 +113,34 @@ function add_data() {
       }
     }, 'admin-2-boundaries-dispute');
     
-
-if (mode == 'private') {
-    private_version();
-}
-setMaxZoom();
+private_version();
 reset();
 };
 
 
 function updateLayer(Time) {
-    //map.setFilter('earthquake'+l, ['==', ['number', ['get', 'show']], 1] )
     map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);
-    if (mode == 'private'){
     map.setFilter('act' + l, ['==', ['number', ['get', 'Time']], Time]);
-    }
-        
-    document.getElementById('active-hour').innerText = Time;
-    
+    document.getElementById('active-hour').innerText = Time;    
 };
 
 function play_b() {
 
 if (play == false) {
 v = [];
-//document.querySelector('.btn-new').classList.remove();
-    //document.querySelector('.player-1-panel').classList.remove('active');
-
 for (var j=0; j < endTime; j++) {
-    
     v.push(setTimeout( function () {
-        
         document.getElementById('slider').value=i;
         Time = i;
-        
         i++;
         updateLayer(Time) }, j*1000/speed));
     }
     play = true;
 }
-    
 };
 
 function reset() { 
-    
     pause();
-    
-    
     i = 0;
     document.getElementById('slider').value=i;
     Time = i;
@@ -272,9 +205,7 @@ function private_version() {
     map.on('click', 'earthquake' + l, function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
         var serial_number = e.features[0].properties.Sn;
-        var description = e.features[0].properties.Description + 
-            '<button class="hide_sensor"> Hide sensor </button>'
-            ;
+        var description = e.features[0].properties.Description;
         
       
         
@@ -342,24 +273,7 @@ function select_earthquake(e) {
     e.style.color = 'white';
     
     title = e.getElementsByClassName('title')[0].innerText;
-    
-    
-    //var p = document.getElementById('para');
-    //p.innerHTML = 'You clicked on cell:' + ' ' + e.innerText;
-    //console.log(e.innerText)
-    //console.log(e.innerHTML)
-    /*
-    if (mode == 'private') {
-        url = e.getElementsByClassName('private_url')[0].innerText;    
-    }
-    else {
-        url = e.getElementsByClassName('public_url')[0].innerText;
-    }
-    */
-    //url = 'media/public_' + e.innerText + '.geojson';
-    //console.log(e.innerText)
-    //html_string = e.innerHTML;
-    //url = $(html_string)[4]
+    document.getElementById('load').click();
     
 }
 

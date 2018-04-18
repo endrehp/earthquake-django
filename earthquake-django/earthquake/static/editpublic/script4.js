@@ -225,7 +225,6 @@ reset();
 
 
 function updateLayer(Time) {
-    //map.setFilter('earthquake'+l, ['==', ['number', ['get', 'show']], 1] )
     map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);
     if (Time >= epi_delay) {
     map.setFilter('epicenter'+ l, ['==', ['number', ['get', 'Time']], Time-epi_delay]);
