@@ -39,6 +39,15 @@ a {
   height: 500;
   background-color: white;
 }
+
+#hider{
+	position: fixed;
+	width: 200px; 
+	height: 200px; 
+	background-color: white; 
+	bottom: 0; 
+	right: 0; 
+}
 .session {
   top: 300px;
   margin-bottom: 20px;
@@ -208,4 +217,21 @@ th, td {
     padding: 8px;
 }
 
+#load{
+	display: none; 
+	visibility: hidden;	
+	z-index: -1; 
+	
+}
+.hidden{
+	display:none; 
+}
+
 tr:nth-child(even){background-color: #f2f2f2}
+.button_hider {
+	display: none;
+}
+
+.ion-ios-plus-outline {
+	display: none;
+}

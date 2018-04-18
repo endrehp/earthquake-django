@@ -6,25 +6,14 @@ console.log('begynn igjen')
 var select;
 //var select2;
 window.onload = function () {
-
-    
     select2 = document.getElementById('dropdown2');
     for(var i = 0; i < modes.length ; i++) {
         var option = document.createElement('option');
         option.text = option.value = modes[i];
-        select2.add(option, 0);
+ //       select2.add(option, 0);
     }
-}
-
-
-
-
-function changeHiddenInput2(objDropDown) {
-    //console.log(objDropDown);
-    var objHidden = document.getElementById("hiddenInput2");
-    objHidden.value = objDropDown.value;
-    var a = objHidden.value;
-    mode= a;
+    
+  
 }
 
 
@@ -36,7 +25,7 @@ var l = 0;
 var v =[];
 var i;
 var Time;
-var url; //= mode + '_' + earthquakeDate;
+var url; 
 var play = false;
 var b;
 var a;
@@ -44,7 +33,6 @@ var endTime = 700;
 var speed = 10;
 var title;
 
- 
 
 var map = new mapboxgl.Map({
   container: 'map', // container element id
@@ -63,18 +51,17 @@ map.on('load', function() {
     
     if (l > 0) {
     map.removeLayer('earthquake' + l);
-    map.removeLayer('act' + l)
+    //map.removeLayer('act' + l)
     
     }
         
     l += 1
         
-    if (mode == 'private') {
-        url = 'media/private_' + title + '.geojson';
-    }
-    else {
-        url = 'media/public_' + title + '.geojson';
-    }
+    
+   
+      
+		  //'media/public_' + title + '.geojson';
+    
     //url = mode + '_' + earthquakeDate;
     //url
     //a = $.getJSON(url + '.geojson', function (data) {
@@ -162,10 +149,33 @@ function add_data() {
     }, 'admin-2-boundaries-dispute');
     
 
-if (mode == 'private') {
-    private_version();
-}
-setMaxZoom();
+	
+    map.on('click', 'earthquake' + l, function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var serial_number = e.features[0].properties.Sn;
+        var description =  
+            '<button class="hide_sensor" onclick = "fill_form(\'' + serial_number +'\' );"> Hide sensor </button>'
+            ;
+        
+      
+        
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+        
+       
+    })
+
+
+map.setMaxZoom(9);
 reset();
 };
 
@@ -185,8 +195,6 @@ function play_b() {
 
 if (play == false) {
 v = [];
-//document.querySelector('.btn-new').classList.remove();
-    //document.querySelector('.player-1-panel').classList.remove('active');
 
 for (var j=0; j < endTime; j++) {
     
@@ -206,7 +214,6 @@ for (var j=0; j < endTime; j++) {
 function reset() { 
     
     pause();
-    
     
     i = 0;
     document.getElementById('slider').value=i;
@@ -232,85 +239,8 @@ function setEndTime() {
         document.getElementById('slider').max = endTime;
     };
     }
-
-function setMaxZoom(){
-    if (mode=='public'){
-        map.setMaxZoom(9)
-    }
-    else 
-        map.setMaxZoom(22)
-    
-}
-function private_version() {
-    map.addLayer({
-      id: 'act' + l,
-      type: 'circle',
-      source: {
-        type: 'geojson',
-        data: url,//'./' + url + '.geojson' // replace this with the url of your own geojson
-      },
-      paint: {
-        'circle-radius': 6,
-          
-        'circle-color': ["step",
-            ['number', ['get', 'MdAct']] ,
-            '#000000',
-            0,'#000000',
-            1, '#2fff05'
-            
-        ]
-            
-          
-        ,
-        'circle-opacity': 0.8
-      }
-    }, 'admin-2-boundaries-dispute');
-
-
-
-    
-    map.on('click', 'earthquake' + l, function (e) {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var serial_number = e.features[0].properties.Sn;
-        var description = e.features[0].properties.Description + 
-            '<button class="hide_sensor"> Hide sensor </button>'
-            ;
-        
-      
-        
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        new mapboxgl.Popup()
-            .setLngLat(coordinates)
-            .setHTML(description)
-            .addTo(map);
-        
-        /*
-        document.querySelector('.hide_sensor').addEventListener('click', function() {
-            //e.features[0].properties.Description = 'trist'
-            console.log('pressed')
-            $.getJSON(url + '.geojson', function (data) {
-            b = data.features;
-            
-            for (var i = 0; i < b.length; i++) {
-                if (b[i].properties.Sn == serial_number) {
-                    b[i].properties.Description = '<p> hidden </p>';
-                    console.log('hei')
-                } 
-                
-                
-            }
-    })
-      
-            
-    })
-          */
-    });
+	
+	
 
     // Change the cursor to a pointer when the mouse is over the places layer.
     map.on('mouseenter', 'places', function () {
@@ -322,13 +252,11 @@ function private_version() {
         map.getCanvas().style.cursor = '';
     });
     
-};
+
 
 
 
 function select_earthquake(e) {
-    
-    
     
     for (var i=0; i < document.getElementsByClassName('table_row').length; i++){
         //console.log(document.getElementsByClassName('table_row')[i].innerHTML)
@@ -342,25 +270,22 @@ function select_earthquake(e) {
     e.style.color = 'white';
     
     title = e.getElementsByClassName('title')[0].innerText;
+	//url = e.getElementsByClassName('public_url')[0].innerText;
+    url = 'media/public_' + title + '.geojson';
+	
+	document.getElementById('load').click(); 
+	document.getElementById('title1').value = title; 
+	
+   
     
-    
-    //var p = document.getElementById('para');
-    //p.innerHTML = 'You clicked on cell:' + ' ' + e.innerText;
-    //console.log(e.innerText)
-    //console.log(e.innerHTML)
-    /*
-    if (mode == 'private') {
-        url = e.getElementsByClassName('private_url')[0].innerText;    
-    }
-    else {
-        url = e.getElementsByClassName('public_url')[0].innerText;
-    }
-    */
-    //url = 'media/public_' + e.innerText + '.geojson';
-    //console.log(e.innerText)
-    //html_string = e.innerHTML;
-    //url = $(html_string)[4]
-    
+}
+
+function fill_form(number){
+	document.getElementById('sn').value = number; 
+	document.getElementById('url').value = url; 
+	//document.getElementById('title').value = title; 
+	//document.forms[0].submit()
+	document.getElementById('remove').click(); 
 }
 
 

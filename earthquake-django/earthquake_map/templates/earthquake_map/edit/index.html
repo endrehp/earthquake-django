@@ -19,17 +19,15 @@
 <div id='map'></div>
     
 <script src="{% static 'editpublic/script3.js' %}"></script>  
-<div class='container' >
+<div class='container' ></div>    
+	
 
-    </div>    
     
     
 <div id='console'>
   <img src="{% static 'editpublic/skyalert_logo.png'  %}" alt="logo" width="130" height="70">
 <a id='home_button' href="{% url 'admin_home' %}">Home</a>
-
-
-    
+	
 <button class="btn"><i class="ion-ios-plus-outline"></i></button>
 <button class="btn-pause"><i class="ion-ios-plus-outline"></i></button>
 <button class="btn-reset"><i class="ion-ios-plus-outline"><i class="material-icons" id  ="reload" style="font-size:28px;color:#555" >rotate_left</i></i></button>
@@ -40,12 +38,6 @@
     
 
 {% if earthquakes %}
-<!--
-<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu"/>
-    <i class="fa fa-remove"></i>
--->
-
 
 <div style='overflow-y:auto;'>
 <table >
@@ -64,7 +56,6 @@
     <td class='title'>{{earthquake.title}}   </td>
 
     <td hidden>  <label class='public_url'> {{earthquake.public_url}} </label> </td>
-    <td hidden>  <label class='private_url'> {{earthquake.private_url}} </label> </td>
 
 </tr>
 
@@ -75,34 +66,42 @@
 {% endif %}
 
 </div>
-
     
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+<div id="result"> </div>   
     
 
-<div id="result"> </div>    
-    
-<form method="post">
-    <h1>Mode</h1>
-    <select id="dropdown2" name="dropdown2" onchange="changeHiddenInput2(this)">
-    
-    </select>
-    <input type="hidden" name="hiddenInput2" id="hiddenInput2" value="" />
-</form>
 <form name="speedinput">
 <h1>Speed</h1>
 <input id='speed' type="number" name="speed" value="10", min="1", max="20" >    
 </form>
     
+	
+	<form method ='POST' action = "{%url 'editpublic' %}" enctype="multipart/form-data" hidden>
+		{% csrf_token %}
+		<input type = "text" id = "sn" name = "serial_number" />
+		<input type = "text" id = "url" name = "url" />	
+		
+		<input type = "text"  id = "title1" name = "main_title"/>
+		<input  type="submit" name = "action" value = "remove" id = "remove" />	
+		<input type = "submit" name = "action" value = "export"  id = "export" />
+	</form>
 </div>
-<button class='new-data'><i class="ion-ios-plus-outline"></i>Load</button>    
+	
+	
+	
+	
+	
+	<button class='new-data' id = "load" hidden><i class="ion-ios-plus-outline"></i>Load</button>
+	
+	
 
-    
 
+
+   
 
 </body>
-
 </html>
 

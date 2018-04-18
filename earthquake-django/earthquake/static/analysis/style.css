@@ -127,6 +127,8 @@ i {
     top: 330px;
     left: 200px;
     padding: 2px;
+	visibility: hidden;
+	display: none; 
 }
 
 
