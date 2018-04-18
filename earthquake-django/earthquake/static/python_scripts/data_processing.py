@@ -4,13 +4,12 @@ import geojson
 from django.templatetags.static import static
 #from django.core.files import File
 
-def data_processing(excel_file, date):
+def data_processing(excel_file, date, epi_lon, epi_lat):
 
 
     #Import
     #date='02-17-2018'
     df=pd.read_excel(excel_file)
-
 
 
     #Clean Data
@@ -217,3 +216,24 @@ def data_processing(excel_file, date):
     print('geojson laget')
     #f = open('public_' + date + '.geojson', 'r') 
     #return File(f)
+    
+    
+    epi_df = pd.DataFrame()
+    epi_df['time'] = list(range(t_max))
+    epi_df['radius'] = list(range(t_max))
+    epi_df['lon'] = epi_lon
+    epi_df['lat'] = epi_lat
+    
+    def data2geojson_epicenter(df):
+        features = []
+        insert_features = lambda X: features.append(
+                geojson.Feature(geometry=geojson.Point((X["lon"],
+                                                        X["lat"])),
+                                properties=dict(                                             Rad=X["radius"],
+                                                Time=X['time'],
+                                               )))
+        df.apply(insert_features, axis=1)
+        with open('media/epicenter_' + date + '.geojson', 'w', encoding='utf8') as fp:
+            geojson.dump(geojson.FeatureCollection(features), fp, sort_keys=True, ensure_ascii=False)
+            
+    data2geojson_epicenter(epi_df)
