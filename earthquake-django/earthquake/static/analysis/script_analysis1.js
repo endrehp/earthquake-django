@@ -342,6 +342,7 @@ function select_earthquake(e) {
     e.style.color = 'white';
     
     title = e.getElementsByClassName('title')[0].innerText;
+	document.getElementById('load').click(); 
     
     
     //var p = document.getElementById('para');

@@ -217,12 +217,7 @@ th, td {
     padding: 8px;
 }
 
-#load{
-	display: none; 
-	visibility: hidden;	
-	z-index: -1; 
-	
-}
+
 .hidden{
 	display:none; 
 }
