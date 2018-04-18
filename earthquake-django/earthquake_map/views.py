@@ -35,9 +35,31 @@ def analysis(request):
 @login_required
 def editpublic(request):
     earthquakes = Earthquake_object.objects
-    
-    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-
+    print("kommer hit")
+    if request.method == 'POST':# and request.POST['export']:# and request.POST['main_title']:
+	    if request.POST['action'] == "export":
+		    if request.POST['export'] and request.POST['main_title']:
+			    print("exporting")
+			    temp_title = request.POST['main_title']
+			    sensor_reomver.export_func(temp_title)
+			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+		    else: 
+			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})	
+	    elif request.POST['action'] == "remove": 
+		    if request.POST['serial_number'] and request.POST['url']:
+		    	print("steg3")
+		    	sn = request.POST['serial_number']
+		    	url = request.POST['url']
+		    	sensor_remover.remove_sensor(url, sn)
+		    	print("kjørte remove")
+		    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+		    else: 
+    			return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+				# add warning message? 
+	    else: 
+		    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+    else: 
+    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
 
 @login_required
 def data(request):
@@ -75,38 +97,6 @@ def data(request):
         else:
             return render(request, 'earthquake_map/data.html')
 
-<<<<<<< HEAD
-@login_required
-def editpublic(request):
-    earthquakes = Earthquake_object.objects
-    print("kommer hit")
-    if request.method == 'POST':# and request.POST['export']:# and request.POST['main_title']:
-	    if request.POST['action'] == "export":
-		    if request.POST['export'] and request.POST['main_title']:
-			    print("exporting")
-			    temp_title = request.POST['main_title']
-			    sensor_reomver.export_func(temp_title)
-			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
-		    else: 
-			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})	
-	    elif request.POST['action'] == "remove": 
-		    if request.POST['serial_number'] and request.POST['url']:
-		    	print("steg3")
-		    	sn = request.POST['serial_number']
-		    	url = request.POST['url']
-		    	sensor_remover.remove_sensor(url, sn)
-		    	print("kjørte remove")
-		    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
-		    else: 
-    			return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
-				# add warning message? 
-	    else: 
-		    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
-    else: 
-    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
-=======
-
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208
 
 
 # Imaginary function to handle an uploaded file.
