@@ -32,6 +32,12 @@ def analysis(request):
     earthquakes = Earthquake_object.objects
     return render(request, 'earthquake_map/analysis/index_analysis.html',{'earthquakes': earthquakes})
 
+@login_required
+def editpublic(request):
+    earthquakes = Earthquake_object.objects
+    
+    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+
 
 @login_required
 def data(request):
@@ -50,12 +56,12 @@ def data(request):
             #earthquake.geojson_public = request.FILES['excel_data']
             
             magnitude = request.POST['magnitude']
-            epi_lon = request.POST['epi_lon']
-            epi_lat = request.POST['epi_lat']
+            epi_lon = float(request.POST['epi_lon'])
+            epi_lat = float(request.POST['epi_lat'])
             
             earthquake = Earthquake_object(title=title, public_url=public_url, private_url=private_url, magnitude=magnitude, epi_lon=epi_lon, epi_lat=epi_lat)
             
-            data_processing(request.FILES['excel_data'], title)
+            data_processing(request.FILES['excel_data'], title, epi_lon, epi_lat)
             
             earthquake.save() #inserts into database      
             earthquakes = Earthquake_object.objects
@@ -69,6 +75,7 @@ def data(request):
         else:
             return render(request, 'earthquake_map/data.html')
 
+<<<<<<< HEAD
 @login_required
 def editpublic(request):
     earthquakes = Earthquake_object.objects
@@ -97,6 +104,9 @@ def editpublic(request):
 		    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
     else: 
     	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+=======
+
+>>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208
 
 
 # Imaginary function to handle an uploaded file.
