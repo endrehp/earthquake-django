@@ -198,7 +198,7 @@ function add_data() {
         var coordinates = e.features[0].geometry.coordinates.slice();
         var serial_number = e.features[0].properties.Sn;
         var description =  
-            '<button class="hide_sensor" onclick = "fill_form(\'' + serial_number +'\' );"> Hide sensor </button>'
+            '<button class="hide_sensor" onclick = "fill_form(\'' + serial_number +'\' );"> Hide sensor </button><p>--------</p>'
             ;
         
       

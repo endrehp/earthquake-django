@@ -221,26 +221,7 @@ function private_version() {
             .setHTML(description)
             .addTo(map);
         
-        /*
-        document.querySelector('.hide_sensor').addEventListener('click', function() {
-            //e.features[0].properties.Description = 'trist'
-            console.log('pressed')
-            $.getJSON(url + '.geojson', function (data) {
-            b = data.features;
-            
-            for (var i = 0; i < b.length; i++) {
-                if (b[i].properties.Sn == serial_number) {
-                    b[i].properties.Description = '<p> hidden </p>';
-                    console.log('hei')
-                } 
-                
-                
-            }
-    })
       
-            
-    })
-          */
     });
 
     // Change the cursor to a pointer when the mouse is over the places layer.
@@ -273,29 +254,9 @@ function select_earthquake(e) {
     e.style.color = 'white';
     
     title = e.getElementsByClassName('title')[0].innerText;
-<<<<<<< HEAD:earthquake-django/earthquake/static/analysis/script_analysis2.js
+
     document.getElementById('load').click();
-=======
-	document.getElementById('load').click(); 
-    
-    
-    //var p = document.getElementById('para');
-    //p.innerHTML = 'You clicked on cell:' + ' ' + e.innerText;
-    //console.log(e.innerText)
-    //console.log(e.innerHTML)
-    /*
-    if (mode == 'private') {
-        url = e.getElementsByClassName('private_url')[0].innerText;    
-    }
-    else {
-        url = e.getElementsByClassName('public_url')[0].innerText;
-    }
-    */
-    //url = 'media/public_' + e.innerText + '.geojson';
-    //console.log(e.innerText)
-    //html_string = e.innerHTML;
-    //url = $(html_string)[4]
->>>>>>> 760f801978c031a71cee2b0ae49e08ec96c589df:earthquake-django/earthquake/static/analysis/script_analysis2.js
+
     
 }
 
