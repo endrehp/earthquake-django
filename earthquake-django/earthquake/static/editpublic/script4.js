@@ -26,10 +26,8 @@ var v =[];
 var i;
 var Time;
 var url; 
-<<<<<<< HEAD:earthquake-django/earthquake/static/editpublic/script3.js
-=======
+
 var epi_url;
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208:earthquake-django/earthquake/static/editpublic/script4.js
 var play = false;
 var b;
 var a;
@@ -57,32 +55,14 @@ map.on('load', function() {
     
     if (l > 0) {
     map.removeLayer('earthquake' + l);
-<<<<<<< HEAD:earthquake-django/earthquake/static/editpublic/script3.js
-    //map.removeLayer('act' + l)
-=======
-    map.removeLayer('act' + l)
     map.removeLayer('epicenter' + l)
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208:earthquake-django/earthquake/static/editpublic/script4.js
     
     }
         
     l += 1
         
-<<<<<<< HEAD:earthquake-django/earthquake/static/editpublic/script3.js
-    
-   
-      
-		  //'media/public_' + title + '.geojson';
-    
-=======
-    if (mode == 'private') {
-        url = 'media/private_' + title + '.geojson';
-    }
-    else {
-        url = 'media/public_' + title + '.geojson';
-    }
+
     epi_url = 'media/epicenter_' + title + '.geojson';
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208:earthquake-django/earthquake/static/editpublic/script4.js
     //url = mode + '_' + earthquakeDate;
     //url
     //a = $.getJSON(url + '.geojson', function (data) {

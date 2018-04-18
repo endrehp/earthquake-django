@@ -123,16 +123,14 @@ i {
 	color:#202020;
 }
 
-<<<<<<< HEAD
+
 .new-data {
     top: 330px;
     left: 200px;
     padding: 2px;
-	visibility: hidden;
-	display: none; 
+ 
 }
-=======
->>>>>>> 665a01bfab438afe45b67df40dd1246c7bc1f208
+
 
 
 .mapboxgl-popup {
