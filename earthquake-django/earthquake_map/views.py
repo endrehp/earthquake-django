@@ -42,9 +42,9 @@ def editpublic(request):
 			    print("exporting")
 			    temp_title = request.POST['main_title']
 			    sensor_reomver.export_func(temp_title)
-			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+			    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
 		    else: 
-			    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})	
+			    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})	
 	    elif request.POST['action'] == "remove": 
 		    if request.POST['serial_number'] and request.POST['url']:
 		    	print("steg3")
@@ -52,14 +52,14 @@ def editpublic(request):
 		    	url = request.POST['url']
 		    	sensor_remover.remove_sensor(url, sn)
 		    	print("kjørte remove")
-		    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+		    	return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
 		    else: 
-    			return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+    			return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
 				# add warning message? 
 	    else: 
-		    return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+		    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
     else: 
-    	return render(request, 'earthquake_map/edit/index.html',{'earthquakes': earthquakes})
+    	return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
 
 @login_required
 def data(request):

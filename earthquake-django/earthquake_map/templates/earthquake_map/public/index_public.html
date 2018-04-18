@@ -9,118 +9,7 @@
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="{% static 'public/style.css' %}">
-
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
-
-.w3-sidebar {
-  z-index: 3;
-  width: 200px;
-  top: 0px;
-  bottom: 0;
-  height: inherit;
-  text-align: center;
-}
-#myFooter {
-    position: fixed;
-    bottom: 0;
-    left: 200px;
-    width: 100%; 
-}
-#Map {
-  position:fixed;
-  top:0;
-  width:100%;
-  left: 200px;
-}
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    -webkit-animation-name: fadeIn; /* Fade in the background */
-    -webkit-animation-duration: 0.4s;
-    animation-name: fadeIn;
-    animation-duration: 0.4s
-}
-/* Modal Content */
-.modal-content {
-    position: fixed;
-    bottom: 0;
-    background-color: #fefefe;
-    width: 100%;
-    -webkit-animation-name: slideIn;
-    -webkit-animation-duration: 0.4s;
-    animation-name: slideIn;
-    animation-duration: 0.4s
-}
-/* The Close Button */
-.close {
-    color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-.modal-header {
-    padding: 2px 16px;
-    background-color: orange;
-    color: white;
-}
-.modal-body {padding: 2px 16px;}
-.modal-footer {
-    padding: 2px 16px;
-    background-color: orange;
-    color: white;
-}
-/* Add Animation */
-@-webkit-keyframes slideIn {
-    from {bottom: -300px; opacity: 0} 
-    to {bottom: 0; opacity: 1}
-}
-@keyframes slideIn {
-    from {bottom: -300px; opacity: 0}
-    to {bottom: 0; opacity: 1}
-}
-@-webkit-keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
-}
-@keyframes fadeIn {
-    from {opacity: 0} 
-    to {opacity: 1}
-}
-.myFooter {
-     position: fixed;
-     bottom: 0;
-     width: 100%;
-     height: 50px;
-}
-
-#sliderbar {
-    width: 500px;
-    
-    }
-
-
-</style>    
-    
+<link type="text/css" rel="stylesheet" href="{% static 'public/style_public.css' %}">
 </head>
 
 <body>
@@ -129,18 +18,33 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
 <div id='map'></div>
     
-<script src="{% static 'public/script_public.js' %}"></script>  
-    
-{% if earthquakes %}
-<!--
-<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu"/>
-    <i class="fa fa-remove"></i>
--->
+ 
+  
+	
 
+<script src="{% static 'public/script_public1.js' %}"></script>  
+<div class='container' ></div>  
+
+
+    
+    
+<div id='console'>
+  <img src="{% static 'editpublic/skyalert_logo.png'  %}" alt="logo" width="130" height="70">
+<a id='home_button' href="{% url 'admin_home' %}">Home</a>
+	
+<button class="btn"><i class="ion-ios-plus-outline"></i></button>
+<button class="btn-pause"><i class="ion-ios-plus-outline"></i></button>
+<button class="btn-reset"><i class="ion-ios-plus-outline"><i class="material-icons" id  ="reload" style="font-size:28px;color:#555" >rotate_left</i></i></button>
+<div class='session' id='sliderbar'>
+  <h2>Time: <label id='active-hour'>0</label></h2>
+  <input id='slider' class='row' type='range' min='0' max='700' step='1' value='0' />
+</div>
+    
+
+{% if earthquakes %}
 
 <div style='overflow-y:auto;'>
-<table class="w3-table w3-striped" style = "width:200px">
+<table >
 <tr id='header_row'>
     <td>Magnitude</td>
     <td>Date</td>
@@ -154,180 +58,45 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     
     <td >{{earthquake.magnitude}}   </td>
     <td class='title'>{{earthquake.title}}   </td>
-<!--
+
     <td hidden>  <label class='public_url'> {{earthquake.public_url}} </label> </td>
-    <td hidden>  <label class='private_url'> {{earthquake.private_url}} </label> </td>
--->
+
 </tr>
 
 {% endfor %}
-    
-<button class="new-data"><i class="ion-ios-plus-outline"></i>Load</button> 
 </table>
 
 
 {% endif %}
-    
 
 </div>
-
-    
-    
-
-  
-   
-    
-    <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-<div class="w3-main" style="margin-left:250px">
-
-
-
-<script>
-function move() {
-    var elem = document.getElementById("myBar"); 
-    var width = 1;
-    var id = setInterval(frame, 10);
-    function frame() {
-        if (width >= 100) {
-            clearInterval(id);
-        } else {
-            width++;
-            var num = width * 1/2; 
-            num = num.toFixed(0)
-            document.getElementById("demo").innerHTML = num;
-            elem.style.width = width + '%'; 
-        }
-    }
-}
-</script>
-
-<div class="popup w3-display-topright" onclick="info()">
-  <button class="w3-button w3-circle w3-grey popup" id = "myBtn">?
-     </button>
-</div>
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>Modal Header</h2>
-    </div>
-    <div class="modal-body">
-      <p>Some text in the Modal Body</p>
-      <p>Some other text...</p>
-    </div>
-    <div class="modal-footer">
-      <h3>Modal Footer</h3>
-    </div>
-  </div>
-
-</div>
-
-
-<script>
-// Get the modal
-var modal = document.getElementById('myModal');
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
-
-
-
-  <footer id="myFooter">
-    <div class="w3-container w3-theme-l1 w3-padding-32">
-      
-    
-{% if user.is_authenticated %}
-<a id='home_button' href="{% url 'admin_home' %}">Home</a>
-
-{% else %}
-<a id='home_button' href="{% url 'login' %}">Admin</a>
-
-{% endif %}
-
-
-<button class="btn"><i class="ion-ios-plus-outline"></i></button>
-<button class="btn-pause"><i class="ion-ios-plus-outline"></i></button>
-<button class="btn-reset"><i class="ion-ios-plus-outline"><i class="material-icons" id  ="reload" style="font-size:28px;color:#555" >rotate_left</i></i></button>
-<div class='session' id='sliderbar'>
-  <h6>Time: <label id='active-hour'>0</label></h6>
-  <input id='slider' class='row' type='range' min='0' max='700' step='1' value='0' />
-</div>
     
 
 
 
     
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    
-    
 <form name="speedinput">
-<h6>Speed</h6>
+<h1>Speed</h1>
 <input id='speed' type="number" name="speed" value="10", min="1", max="20" >    
 </form>
     
-
-    </div>
-  </footer>
- 
+	
 
 
 
-<!-- END MAIN -->
-</div>
+	
+	
+	
+	
 
 
-<script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-    if (mySidebar.style.display === 'block') {
-        mySidebar.style.display = 'none';
-        overlayBg.style.display = "none";
-    } else {
-        mySidebar.style.display = 'block';
-        overlayBg.style.display = "block";
-    }
-}
-// Close the sidebar with the close button
-function w3_close() {
-    mySidebar.style.display = "none";
-    overlayBg.style.display = "none";
-}
-</script>
-
-
-    
-
+	</div>
+	<button class='new-data' id = "load" hidden ><i class="ion-ios-plus-outline"></i>Load</button>
+   
 
 </body>
-
 </html>
+	
 
 

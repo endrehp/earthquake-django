@@ -162,4 +162,6 @@ function select_earthquake(e) {
     e.style.background = 'black';
     e.style.color = 'white';
     title = e.getElementsByClassName('title')[0].innerText;
+	
+	document.getElementById('load').click();
 };
