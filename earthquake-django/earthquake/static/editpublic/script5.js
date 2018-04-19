@@ -321,7 +321,7 @@ function select_earthquake(e) {
     
     title = e.getElementsByClassName('title')[0].innerText;
 	//url = e.getElementsByClassName('public_url')[0].innerText;
-    url = 'media/public_' + title + '.geojson';
+    url = 'media/edit_public_' + title + '.geojson';
 	
 	document.getElementById('load').click(); 
 	document.getElementById('title1').value = title; 

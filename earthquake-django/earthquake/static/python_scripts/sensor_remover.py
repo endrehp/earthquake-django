@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd 
 import geojson 
 from django.templatetags.static import static 
+import os 
 
 def remove_sensor(url, sn):
 	print('starting remov func')
@@ -23,13 +24,18 @@ def export_func(title):
 	public_url = 'media/public_' + title + '.geojson'
 	edit_url = 'media/edit_public_' + title + '.geojson'
 	raw_url = 'media/raw_public_' + title + '.geojson'
-	with open(public_url, 'r') as data_file:
-		data = geojson.load(data_file)
-	
-	with open(raw_url, 'w') as raw_file:
-		geojson.dump(data, raw_file)
 	with open(edit_url, 'r') as edit_file: 
 		edited_data = geojson.load(edit_file)
 	with open(public_url, 'w') as public_file: 
 		geojson.dump(edited_data, public_file)
 	print("export success")
+def undo_func(title):
+	edit_url = 'media/edit_public_' + title + '.geojson'
+	public_url = 'media/public_' + title + '.geojson'
+	raw_url = 'media/raw_public_' + title + '.geojson'
+	with open(raw_url, 'r') as raw_file: 
+		raw_data = geojson.load(raw_file)
+	with open(edit_url, 'w') as edit_file: 
+		geojson.dump(raw_data, edit_file)
+	os.remove(public_url)
+	

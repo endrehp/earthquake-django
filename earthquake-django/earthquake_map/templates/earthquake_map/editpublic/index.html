@@ -22,7 +22,7 @@
   
 	
 
-<script src="{% static 'editpublic/script4.js' %}"></script>  
+<script src="{% static 'editpublic/script5.js' %}"></script>  
 <div class='container' ></div>  
 
 
@@ -83,14 +83,15 @@
 </form>
 
 	
-	<form method ='POST' action = "{%url 'edit_public' %}" enctype="multipart/form-data" hidden>
+	<form method ='POST' action = "{%url 'edit_public' %}" enctype="multipart/form-data">
 		{% csrf_token %}
-		<input type = "text" id = "sn" name = "serial_number" />
-		<input type = "text" id = "url" name = "url" />	
+		<input type = "text" id = "sn" name = "serial_number" hidden />
+		<input type = "text" id = "url" name = "url" hidden />	
 		
-		<input type = "text"  id = "title1" name = "main_title"/>
-		<input  type="submit" name = "action" value = "remove" id = "remove" />	
-		<input type = "submit" name = "action" value = "export"  id = "export" />
+		<input type = "text"  id = "title1" name = "main_title" hidden/>
+		<input  type="submit" name = "action" value = "remove" id = "remove" hidden/>	
+		<input type = "submit" name = "action" value = "export"  id = "export"  />
+		<input type = "submit" name = "action" value = "undo" id = "undo" />
 	</form>
 
 <form name="epicenter_speedinput">
