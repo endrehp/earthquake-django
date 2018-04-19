@@ -197,8 +197,8 @@ function add_data() {
     map.on('click', 'earthquake' + l, function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
         var serial_number = e.features[0].properties.Sn;
-        var description =  
-            '<button class="hide_sensor" onclick = "fill_form(\'' + serial_number +'\' );"> Hide sensor </button><p>--------</p>'
+        var description = 
+            '<button id = "hide_sensor" onclick = "fill_form(\'' + serial_number +'\' );"> Hide sensor </button>'
             ;
         
       
