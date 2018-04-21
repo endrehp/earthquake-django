@@ -13,6 +13,11 @@ var a;
 var endTime = 700;
 var speed = 10;
 var title;
+var epi_url;
+var epi_info_url;
+var epi_speed;
+var epi_delay;
+
 
     
 var map = new mapboxgl.Map({
@@ -30,9 +35,15 @@ map.on('load', function() {
     
     if (l > 0) {
     map.removeLayer('earthquake' + l);
+    map.removeLayer('epicenter' + l)
     };  
     l += 1
+    epi_url = 'media/epicenter_' + title + '.geojson';
     url = 'media/public_' + title + '.geojson';
+    epi_info_url = 'media/epi_public_' + title + '.json'    
+    
+    getEpiInfo(epi_info_url)
+    
     speed = document.getElementById('speed').value;
     add_data()
     });
@@ -103,14 +114,54 @@ function add_data() {
       }
     }, 'admin-2-boundaries-dispute');
     
-    
+    map.addLayer({
+      id: 'epicenter' + l,
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: epi_url, //replace this with the url of your own geojson
+      },
+      paint: {
+        'circle-radius': {
+        'property': 'Rad',
+        //'type': 'exponential',
+        //stops: [[0,0],[22,5000000]],
+        //base: 2
+            
+        //},
+            
+            
+        stops:[ 
+            [{zoom: 0, value: 0}, 0],
+            [{zoom:0, value:700}, 0],
+            [{zoom:22, value:0}, 0],
+            [{zoom: 22, value: 700}, 70000000*epi_speed],
+            
+            ],
+        base: 2,
+        },
+            
+        /*'circle-radius':  
+          ['interpolate',
+          ['linear'],
+          ['number', ['get', 'Rad']],
+        0, 0,
+        700, 700*epi_speed
+        ],*/
+        
+        'circle-stroke-width': 2,
+        'circle-stroke-color': 'green',
+        'circle-opacity': 0
+      }
+    });
     
 reset();
 };
 
 
 function updateLayer(Time) {
-    map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);    
+    map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time+epi_delay]); 
+    map.setFilter('epicenter'+ l, ['==', ['number', ['get', 'Time']], Time]);
     document.getElementById('active-hour').innerText = Time;
     
 };
@@ -155,6 +206,21 @@ function setEndTime() {
         document.getElementById('slider').max = endTime;
     };
     };
+
+function getEpiInfo(epi_url) {
+     epi_info = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': epi_url,
+        'dataType': "json",
+        'success': function (data) {
+            epi_info = data;
+        }
+    });
+    epi_speed = Number(epi_info.epi_speed);
+    epi_delay = Number(epi_info.delay);
+ };
 
 function select_earthquake(e) {
     for (var i=0; i < document.getElementsByClassName('table_row').length; i++){

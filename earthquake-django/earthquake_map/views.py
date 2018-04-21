@@ -4,6 +4,7 @@ from .forms import UploadFileForm
 from django.conf.urls.static import static
 from static.python_scripts.data_processing import data_processing
 from static.python_scripts import sensor_remover
+from static.python_scripts.export_epi_info import export_epi_info
 #from static.python_scripts.sensor_remover import export_func
 from .models import Earthquake_object
 from django.core.files import File
@@ -38,33 +39,35 @@ def editpublic(request):
     earthquakes = Earthquake_object.objects
     print("kommer hit")
     if request.method == 'POST':# and request.POST['export']:# and request.POST['main_title']:
-	    if request.POST['action'] == "export":
-		    #if (request.POST['export'] and request.POST['main_title']):
-		    print("exporting")
-		    temp_title = request.POST['main_title']
-		    sensor_remover.export_func(temp_title)
-		    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-		    #else: 
+        if request.POST['action'] == "export":
+            #if (request.POST['export'] and request.POST['main_title']):
+            print("exporting")
+            temp_title = request.POST['main_title']
+            sensor_remover.export_func(temp_title)
+            if request.POST['epi_speed'] and request.POST['epi_delay']:
+                export_epi_info(request.POST['epi_speed'], request.POST['epi_delay'], temp_title)
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+#else: 
 			#    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-	    elif request.POST['action'] == "undo":
-		    temp_title = request.POST['main_title']
-		    sensor_remover.undo_func(temp_title)
-		    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-	    elif request.POST['action'] == "remove": 
-		    if (request.POST['serial_number'] and request.POST['url']):
-		    	print("steg3")
-		    	sn = request.POST['serial_number']
-		    	url = request.POST['url']
-		    	sensor_remover.remove_sensor(url, sn)
-		    	print("kjørte remove")
-		    	return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-		    else: 
-    			return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-				# add warning message? 
-	    else: 
-		    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+        elif request.POST['action'] == "undo":
+            temp_title = request.POST['main_title']
+            sensor_remover.undo_func(temp_title)
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+        elif request.POST['action'] == "remove": 
+            if (request.POST['serial_number'] and request.POST['url']):
+                print("steg3")
+                sn = request.POST['serial_number']
+                url = request.POST['url']
+                sensor_remover.remove_sensor(url, sn)
+                print("kjørte remove")
+                return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+            else: 
+                return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+                # add warning message? 
+        else: 
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
     else: 
-    	return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+        return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
 
 @login_required
 def data(request):

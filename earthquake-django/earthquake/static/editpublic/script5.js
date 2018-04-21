@@ -219,7 +219,7 @@ function add_data() {
     })
 
 
-map.setMaxZoom(9);
+
 reset();
 };
 
