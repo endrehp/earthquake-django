@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd    
 import json
 import geojson
+import os.path
 
 # Create your views here.
 @login_required
@@ -27,7 +28,23 @@ def admin_home(request):
 
 def public(request):
     earthquakes = Earthquake_object.objects
-    return render(request, 'earthquake_map/public/index_public.html',{'earthquakes': earthquakes})
+    print(type(earthquakes))
+    #only send edited earthquakes
+    index_edited = []
+    count = 0
+    for earthquake in earthquakes.all():
+        fname = 'media/public_' + earthquake.title + '.geojson'
+        print(fname)
+        if os.path.isfile(fname):
+            index_edited.append(count)
+        count += 1
+    
+    print(index_edited)
+    earthquakes_edited = [Earthquake_object.objects.all()[x] for x in index_edited]
+    print(earthquakes)
+    print(earthquakes_edited)
+    
+    return render(request, 'earthquake_map/public/index_public.html',{'earthquakes': earthquakes_edited})
 
 @login_required
 def analysis(request):

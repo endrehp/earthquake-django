@@ -41,7 +41,7 @@
 <button class="btn-pause"><i class="ion-ios-plus-outline"></i></button>
 <button class="btn-reset"><i class="ion-ios-plus-outline"><i class="material-icons" id  ="reload" style="font-size:28px;color:#555" >rotate_left</i></i></button>
 <div class='session' id='sliderbar'>
-  <h2>Time: <label id='active-hour'>0</label></h2>
+  <h2>Time: <label id='active-hour'>00:00</label></h2>
   <input id='slider' class='row' type='range' min='0' max='700' step='1' value='0' />
 </div>
     
@@ -55,7 +55,7 @@
     <td>Date</td>
     </tr>
 <!-- <table id='earthquake_table'> -->
-{% for earthquake in earthquakes.all reversed %}
+{% for earthquake in earthquakes reversed %}
 <!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
     
     

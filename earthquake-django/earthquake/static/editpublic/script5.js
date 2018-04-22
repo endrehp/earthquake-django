@@ -35,7 +35,9 @@ var endTime = 700;
 var speed = 10;
 var title;
 var epi_speed = 1;
-
+var slider_end_time;
+var filterlist;
+var hidden_sensors = [];
 
 
 var map = new mapboxgl.Map({
@@ -49,6 +51,7 @@ var map = new mapboxgl.Map({
 
 
 map.on('load', function() {
+    slider_end_time = document.getElementById('slider');
     
     
     document.querySelector('.new-data').addEventListener('click', function () {
@@ -63,22 +66,23 @@ map.on('load', function() {
         
 
     epi_url = 'media/epicenter_' + title + '.geojson';
-    //url = mode + '_' + earthquakeDate;
-    //url
-    //a = $.getJSON(url + '.geojson', function (data) {
-    //b = data;})
-    //document.getElementById('date').textContent = earthquakeDate; 
-    //setEndTime();
+    
     speed = document.getElementById('speed').value;
     epi_speed = document.getElementById('epi_speed').value;
     epi_delay = document.getElementById('epi_delay').value;
+    
     
     console.log('legg til noe')
     add_data()
     
     });
     
-    
+
+document.querySelector('.update-layer').addEventListener('click', function () {
+
+updateLayer();
+console.log('layer updated')
+});
 document.getElementById('slider').addEventListener('input', function(e) {
   Time = parseInt(e.target.value);
     i = Time;
@@ -108,7 +112,6 @@ document.querySelector('.btn').addEventListener('click', function() {
 
 function add_data() {
 //setEndTime();
- 
     map.addLayer({
       id: 'earthquake' + l,
       type: 'circle',
@@ -225,7 +228,21 @@ reset();
 
 
 function updateLayer(Time) {
-    map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);
+    //map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);
+    filterlist = ['all', ['==', ['number', ['get', 'Time']], Time]]; 
+    
+    if (hidden_sensors.length > 0) {
+        for (var i = 0; i<hidden_sensors.length; i++) {
+        filterlist.push(['!=', ['number', ['get', 'Sn']], hidden_sensors[i]]) 
+        console.log('lagt til i filterlist')
+    }};
+    
+    //filterlist = ['all', ['==', ['number', ['get', 'Time']], Time], ['!=', ['number', ['get', 'Sn']], 1604396]];
+    map.setFilter('earthquake' + l, filterlist);
+    
+    
+    //map.setFilter('earthquake'+l, ['!=', ['number', ['get', 'Sn']], 1604396])
+    
     if (Time >= epi_delay) {
     map.setFilter('epicenter'+ l, ['==', ['number', ['get', 'Time']], Time-epi_delay]);
     }
@@ -237,8 +254,8 @@ function updateLayer(Time) {
     map.setFilter('act' + l, ['==', ['number', ['get', 'Time']], Time]);
     }
         
-    document.getElementById('active-hour').innerText = Time;
-    
+    document.getElementById('active-hour').innerText = display_time(Time);
+
 };
 
 function play_b() {
@@ -283,13 +300,13 @@ function pause() {
 function setEndTime() {
     $.getJSON(url, function (data) {
         b = data.features.length;
-        endTime = data.features[b-1].properties['Time'];
+        
+        slider_end_time.max = data.features[b-1].properties['Time'];
+        endTime = data.features[b-1].properties['Time'];    
     })
-    for (var h = 0; h < 10;h++){
-        document.getElementById('slider').max = endTime;
+    
     };
-    }
-	
+
 	
 
     // Change the cursor to a pointer when the mouse is over the places layer.
@@ -302,6 +319,14 @@ function setEndTime() {
         map.getCanvas().style.cursor = '';
     });
     
+function display_time(Time) {
+    var minutes   = Math.floor(Time / 60);
+    var seconds = Time - (minutes * 60);
+
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return minutes+':'+seconds;
+};
 
 
 
@@ -314,7 +339,7 @@ function select_earthquake(e) {
         document.getElementsByClassName('table_row')[i].style.color = 'black';
         
     
-    }
+    };
         
     e.style.background = 'black';
     e.style.color = 'white';
@@ -323,7 +348,13 @@ function select_earthquake(e) {
 	//url = e.getElementsByClassName('public_url')[0].innerText;
     url = 'media/edit_public_' + title + '.geojson';
 	
-	document.getElementById('load').click(); 
+    setEndTime();
+    
+    console.log('slider length set to:')
+    console.log(slider_end_time.max)
+    
+	document.getElementById('load').click();
+    
 	document.getElementById('title1').value = title; 
 	
    
@@ -335,7 +366,11 @@ function fill_form(number){
 	document.getElementById('url').value = url; 
 	//document.getElementById('title').value = title; 
 	//document.forms[0].submit()
-	document.getElementById('remove').click(); 
+    console.log(number)
+    hidden_sensors.push(Number(number))
+    //document.getElementById('update-layer').click();
+    //updateLayer();
+	//document.getElementById('remove').click(); 
 }
 
 

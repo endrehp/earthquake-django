@@ -17,6 +17,7 @@ var epi_url;
 var epi_info_url;
 var epi_speed;
 var epi_delay;
+var slider_end_time;
 
 
     
@@ -30,7 +31,7 @@ var map = new mapboxgl.Map({
 
 
 map.on('load', function() {
-    
+    slider_end_time = document.getElementById('slider');
     document.querySelector('.new-data').addEventListener('click', function () {
     
     if (l > 0) {
@@ -162,7 +163,7 @@ reset();
 function updateLayer(Time) {
     map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time+epi_delay]); 
     map.setFilter('epicenter'+ l, ['==', ['number', ['get', 'Time']], Time]);
-    document.getElementById('active-hour').innerText = Time;
+    document.getElementById('active-hour').innerText = display_time(Time);
     
 };
 
@@ -200,12 +201,22 @@ function pause() {
 function setEndTime() {
     $.getJSON(url, function (data) {
         b = data.features.length;
-        endTime = data.features[b-1].properties['Time'];
+        
+        slider_end_time.max = data.features[b-1].properties['Time'];
+        endTime = data.features[b-1].properties['Time'];    
     })
-    for (var h = 0; h < 10;h++){
-        document.getElementById('slider').max = endTime;
+    
     };
-    };
+
+function display_time(Time) {
+    var minutes   = Math.floor(Time / 60);
+    var seconds = Time - (minutes * 60);
+
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return minutes+':'+seconds;
+};
+
 
 function getEpiInfo(epi_url) {
      epi_info = null;
@@ -227,10 +238,13 @@ function select_earthquake(e) {
         document.getElementsByClassName('table_row')[i].style.background = 'white';
         document.getElementsByClassName('table_row')[i].style.color = 'black';
     };
+    
     e.style.background = 'black';
     e.style.color = 'white';
     title = e.getElementsByClassName('title')[0].innerText;
-
+    url = 'media/public_' + title + '.geojson';
+    
+    setEndTime();
     
     document.getElementById('load').click()
 };

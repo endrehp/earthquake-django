@@ -13,7 +13,7 @@ var a;
 var endTime = 700;
 var speed = 10;
 var title;
-
+var slider_end_time;
  
 
 var map = new mapboxgl.Map({
@@ -26,7 +26,7 @@ var map = new mapboxgl.Map({
 
 
 map.on('load', function() {
-    
+    slider_end_time = document.getElementById('slider');
     
     document.querySelector('.new-data').addEventListener('click', function () {
     
@@ -35,7 +35,7 @@ map.on('load', function() {
     map.removeLayer('act' + l)
     } ;
     l += 1;
-    url = 'media/private_' + title + '.geojson';
+    
     speed = document.getElementById('speed').value;
     console.log('legg til noe')
     add_data()
@@ -121,7 +121,7 @@ reset();
 function updateLayer(Time) {
     map.setFilter('earthquake'+ l, ['==', ['number', ['get', 'Time']], Time]);
     map.setFilter('act' + l, ['==', ['number', ['get', 'Time']], Time]);
-    document.getElementById('active-hour').innerText = Time;    
+    document.getElementById('active-hour').innerText = display_time(Time);
 };
 
 function play_b() {
@@ -236,6 +236,25 @@ function private_version() {
     
 };
 
+function setEndTime() {
+    $.getJSON(url, function (data) {
+        b = data.features.length;
+        
+        slider_end_time.max = data.features[b-1].properties['Time'];
+        endTime = data.features[b-1].properties['Time'];    
+    })
+    
+    };
+
+function display_time(Time) {
+    var minutes   = Math.floor(Time / 60);
+    var seconds = Time - (minutes * 60);
+
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return minutes+':'+seconds;
+};
+
 
 
 function select_earthquake(e) {
@@ -246,14 +265,14 @@ function select_earthquake(e) {
         //console.log(document.getElementsByClassName('table_row')[i].innerHTML)
         document.getElementsByClassName('table_row')[i].style.background = 'white';
         document.getElementsByClassName('table_row')[i].style.color = 'black';
-        
-    
-    }
+    };
         
     e.style.background = 'black';
     e.style.color = 'white';
     
     title = e.getElementsByClassName('title')[0].innerText;
+    url = 'media/private_' + title + '.geojson';
+    setEndTime();
 
     document.getElementById('load').click();
 
