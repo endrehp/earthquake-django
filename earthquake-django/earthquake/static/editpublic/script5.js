@@ -79,10 +79,10 @@ map.on('load', function() {
     
 
 document.querySelector('.update-layer').addEventListener('click', function () {
-
-updateLayer();
+updateLayer(Time);
 console.log('layer updated')
 });
+    
 document.getElementById('slider').addEventListener('input', function(e) {
   Time = parseInt(e.target.value);
     i = Time;
@@ -234,7 +234,6 @@ function updateLayer(Time) {
     if (hidden_sensors.length > 0) {
         for (var i = 0; i<hidden_sensors.length; i++) {
         filterlist.push(['!=', ['number', ['get', 'Sn']], hidden_sensors[i]]) 
-        console.log('lagt til i filterlist')
     }};
     
     //filterlist = ['all', ['==', ['number', ['get', 'Time']], Time], ['!=', ['number', ['get', 'Sn']], 1604396]];
@@ -350,8 +349,6 @@ function select_earthquake(e) {
 	
     setEndTime();
     
-    console.log('slider length set to:')
-    console.log(slider_end_time.max)
     
 	document.getElementById('load').click();
     
@@ -362,16 +359,48 @@ function select_earthquake(e) {
 }
 
 function fill_form(number){
-	document.getElementById('sn').value = number; 
-	document.getElementById('url').value = url; 
+	//document.getElementById('sn').value += ' ' + number; 
+	//document.getElementById('url').value = url; 
 	//document.getElementById('title').value = title; 
 	//document.forms[0].submit()
     console.log(number)
-    hidden_sensors.push(Number(number))
-    //document.getElementById('update-layer').click();
-    //updateLayer();
+    pushAndUpdate(Number(number), clickToUpdate);
+    console.log('pushet of opdatert')
+    document.getElementsByClassName('mapboxgl-popup-close-button')[0].click()
+
 	//document.getElementById('remove').click(); 
 }
 
 
 
+function pushAndUpdate(number, update) {
+    hidden_sensors.push(Number(number))
+    update();
+}
+
+function clickToUpdate () {
+    document.getElementById('update-layer').click();
+    console.log('prøvde å klikke')
+}
+
+
+function export_function() {
+    document.getElementById('url').value = url; 
+    document.getElementById('sn').value = hidden_sensors.join()
+    document.getElementById('export').click();
+    
+
+}
+
+/*
+function remove_and_export(export_callback) {
+    document.getElementById('remove').click(); 
+    console.log('remove clicked')
+    export_callback();
+}
+
+function export_callback() {
+    document.getElementById('export').click();
+    console.log('export clicked')
+}
+*/

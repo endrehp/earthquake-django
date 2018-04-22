@@ -4,21 +4,22 @@ import geojson
 from django.templatetags.static import static 
 import os 
 
-def remove_sensor(url, sn):
-	print('starting remov func')
-	
-	with open (url, 'r') as data_file: 
-		data = geojson.load(data_file)
-	
-	print(len(data['features']))
-	
-	data['features'] = [element for element in data['features'] if not int(element['properties']['Sn']) == int(sn)]
-	print(len(data['features']))
-	print(sn)
-	print(int(data['features'][0]['properties']['Sn']))
-	
-	with open(url, 'w') as new_file: 
-		geojson.dump(data, new_file)
+def remove_sensor(url, sn_list):
+    print('starting remov func')
+
+    with open (url, 'r') as data_file: 
+        data = geojson.load(data_file)
+
+    print(len(data['features']))
+
+    for sn in sn_list:
+        data['features'] = [element for element in data['features'] if not int(element['properties']['Sn']) == int(sn)]
+        print(len(data['features']))
+        print(sn)
+        print(int(data['features'][0]['properties']['Sn']))
+
+    with open(url, 'w') as new_file: 
+        geojson.dump(data, new_file)
 
 def export_func(title):
 	public_url = 'media/public_' + title + '.geojson'

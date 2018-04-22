@@ -59,6 +59,16 @@ def editpublic(request):
         if request.POST['action'] == "export":
             #if (request.POST['export'] and request.POST['main_title']):
             print("exporting")
+            print("steg3")
+            sn = request.POST['serial_number']
+            url = request.POST['url']
+            sn_list = sn.split(',')
+            
+            if len(sn_list) > 0:
+                
+                sensor_remover.remove_sensor(url, sn_list)
+                print("kjørte remove")
+            
             temp_title = request.POST['main_title']
             sensor_remover.export_func(temp_title)
             if request.POST['epi_speed'] and request.POST['epi_delay']:
@@ -70,16 +80,13 @@ def editpublic(request):
             temp_title = request.POST['main_title']
             sensor_remover.undo_func(temp_title)
             return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-        elif request.POST['action'] == "remove": 
-            if (request.POST['serial_number'] and request.POST['url']):
-                print("steg3")
-                sn = request.POST['serial_number']
-                url = request.POST['url']
-                sensor_remover.remove_sensor(url, sn)
-                print("kjørte remove")
-                return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
-            else: 
-                return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+        #elif request.POST['action'] == "remove": 
+         #   if (request.POST['serial_number'] and request.POST['url']):
+                
+                    
+                #return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+            #else: 
+             #   return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
                 # add warning message? 
         else: 
             return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
