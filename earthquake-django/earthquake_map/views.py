@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd    
 import json
 import geojson
+import os
 import os.path
 
 # Create your views here.
@@ -74,6 +75,10 @@ def editpublic(request):
             #sensor_remover.export_func(temp_title)
             if request.POST['epi_speed'] and request.POST['epi_delay']:
                 export_epi_info(request.POST['epi_speed'], request.POST['epi_delay'], temp_title)
+            
+            #earthquake = Earthquake_object.objects.all().filter(title=temp_title).update(public_exists = "true")
+            
+            #earthquakes = Earthquake_object.objects
             return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes, 'message': 'export successful'})
 #else: 
 			#    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
@@ -121,6 +126,34 @@ def data(request):
             earthquake.save() #inserts into database      
             earthquakes = Earthquake_object.objects
             return render(request, 'earthquake_map/data.html', {'message': 'the file is uploaded successfully', 'earthquakes': earthquakes})
+        
+        elif request.POST['delete_title']:
+            print(request.POST['delete_title'])
+    
+            title = request.POST['delete_title'][1:-1]
+            public_url = 'media/public_'+title+'.geojson'
+            private_url = 'media/private_'+title+'.geojson'
+            edit_public_url = 'media/edit_public_'+title+'.geojson'
+            epicenter_url = 'media/epicenter_'+title+'.geojson'
+            epi_info_url = 'media/epi_public_'+title+'.json'
+            
+            #Delete object
+            Earthquake_object.objects.filter(title=title).delete()
+            #Delte files
+            if os.path.isfile(public_url):
+                os.remove(public_url)
+                os.remove(epi_info_url)
+            
+            os.remove(private_url)
+            os.remove(edit_public_url)
+            os.remove(epicenter_url)
+            
+
+            earthquakes = Earthquake_object.objects
+            return render(request, 'earthquake_map/data.html', {'message': 'the files were deleted', 'earthquakes': earthquakes})
+        
+
+            
         else:
             return render(request, 'earthquake_map/data.html', {'error': 'one of the required items are missing','earthquakes': earthquakes})    
     else:

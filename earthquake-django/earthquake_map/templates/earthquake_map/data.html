@@ -6,6 +6,7 @@
 {% load static %}
 <link type= "text/css" rel = "stylesheet"
 			  href = "{% static 'data/style.css'%}" >
+<script src="{% static 'data/script_data.js' %}"></script>  
 <form method='POST' action="{% url 'data' %}" enctype="multipart/form-data">
 {% csrf_token %}
 
@@ -38,9 +39,12 @@ Latitude
 Excel data:
 <br />
 <input type='file' name='excel_data' />
+    
+<input type="text" id="delete_title" name="delete_title" hidden />
+
 
     
-<input class='btn btn-primary' type='submit' value='Upload' /> 
+<input id='submit-btn' class='btn btn-primary' type='submit' value='Upload' /> 
 </form>
 
 <a href="{% url 'admin_home' %}">Return to home</a>
@@ -70,22 +74,24 @@ Excel data:
 <tr id='header_row'>
     <td>Magnitude</td>
     <td>Date</td>
+    <td> </td>
     </tr>
 <!-- <table id='earthquake_table'> -->
 {% for earthquake in earthquakes.all reversed %}
 <!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
     
     
-    <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
+    <tr class='table_row' id={{earthquake.id}} >
     
     <td>{{earthquake.magnitude}}   </td>
     <td>{{earthquake.title}}   </td>
-
-    <td hidden>  <label class='url'> {{earthquake.url}} </label> </td>
-
+    <td class='delete-btn' onclick=delete_data(this)>Delete<label class='title_to_delete' hidden> {{earthquake.title}} </label></td>
+    
+        
 </tr>
 
 {% endfor %}
 </table>
     
 {% endif %}
+

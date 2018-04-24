@@ -101,11 +101,13 @@ document.querySelector('.btn-reset').addEventListener('click', function() {
 
 document.querySelector('.btn').addEventListener('click', function() {
     if (l > 0 && play == false ){
-    play_b();} else if (l>0 && play == true){
+        play_b();
+        document.querySelector('.btn').innerHTML= 'Pause'; //'<i class="ion-ios-plus-outline"></i>';
+    }
+    
+    else if (l>0 && play == true){
 		pause();
-		//btn.toggleClass("btn-pause");
-		//return false; 
-		
+	   document.querySelector('.btn').innerHTML= 'Play';//'<i class="ion-ios-plus-outline"></i>';
 	}});
 
 });

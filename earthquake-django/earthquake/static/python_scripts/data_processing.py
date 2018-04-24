@@ -210,8 +210,8 @@ def data_processing(excel_file, date, epi_lon, epi_lat):
         df.apply(insert_features, axis=1)
         with open('media/edit_public_' + date + '.geojson', 'w', encoding='utf8') as fp:
             geojson.dump(geojson.FeatureCollection(features), fp, sort_keys=True, ensure_ascii=False)
-        with open('media/raw_public_' + date + '.geojson', 'w', encoding = 'utf8') as fp: 
-            geojson.dump(geojson.FeatureCollection(features), fp, sort_keys = True, ensure_ascii = False)
+        #with open('media/raw_public_' + date + '.geojson', 'w', encoding = 'utf8') as fp: 
+        #    geojson.dump(geojson.FeatureCollection(features), fp, sort_keys = True, ensure_ascii = False)
 	    
 
     data2geojson_public(only_max)
