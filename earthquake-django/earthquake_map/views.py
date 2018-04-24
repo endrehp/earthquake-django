@@ -29,6 +29,7 @@ def admin_home(request):
 def public(request):
     earthquakes = Earthquake_object.objects
     print(type(earthquakes))
+    
     #only send edited earthquakes
     index_edited = []
     count = 0
@@ -62,18 +63,20 @@ def editpublic(request):
             print("steg3")
             sn = request.POST['serial_number']
             url = request.POST['url']
+            temp_title = request.POST['main_title']
+            public_url = 'media/public_' + temp_title +'.geojson'
             sn_list = sn.split(',')
             
-            if len(sn_list) > 0:
+            #if sn_list[0] != '':
                 
-                sensor_remover.remove_sensor(url, sn_list)
-                print("kjørte remove")
+            sensor_remover.remove_and_export(url, public_url, sn_list)
+            print("kjørte remove and export")
             
-            temp_title = request.POST['main_title']
-            sensor_remover.export_func(temp_title)
+            
+            #sensor_remover.export_func(temp_title)
             if request.POST['epi_speed'] and request.POST['epi_delay']:
                 export_epi_info(request.POST['epi_speed'], request.POST['epi_delay'], temp_title)
-            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes, 'message': 'export successful'})
 #else: 
 			#    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
         elif request.POST['action'] == "undo":
@@ -121,7 +124,7 @@ def data(request):
             earthquakes = Earthquake_object.objects
             return render(request, 'earthquake_map/data.html', {'message': 'the file is uploaded successfully', 'earthquakes': earthquakes})
         else:
-            return render(request, 'earthquake_map/data.html', {'error': 'one of the required items are missing'})    
+            return render(request, 'earthquake_map/data.html', {'error': 'one of the required items are missing','earthquakes': earthquakes})    
     else:
         if Earthquake_object.objects:
             
