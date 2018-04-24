@@ -8,8 +8,10 @@
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="{% static 'editpublic/style.css' %}">
+<link href="{% static 'open-iconic/font/css/open-iconic-bootstrap.css' %}" rel='stylesheet' >
 </head>
 
 <body>
@@ -22,7 +24,7 @@
   
 	
 
-<script src="{% static 'editpublic/script6.js' %}"></script>  
+<script src="{% static 'editpublic/script7.js' %}"></script>  
 <div class='container' ></div>  
 
 
@@ -44,13 +46,14 @@
 {% if earthquakes %}
 
 <div style='overflow-y:auto;'>
-<table >
+<table style='font-size:10' >
 <tr id='header_row'>
     <td>Magnitude</td>
     <td>Date</td>
+    <td>Public</td>
     </tr>
 <!-- <table id='earthquake_table'> -->
-{% for earthquake in earthquakes.all reversed %}
+{% for earthquake in earthquakes reversed %}
 <!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
     
     
@@ -58,6 +61,12 @@
     
     <td >{{earthquake.magnitude}}   </td>
     <td class='title'>{{earthquake.title}}   </td>
+    
+    {% if earthquake.public_exists %}
+    <td><span class="oi oi-circle-check"></span></td>
+    {% else %}
+    <td> </td>
+    {% endif %}
 
     <td hidden>  <label class='public_url'> {{earthquake.public_url}} </label> </td>
     

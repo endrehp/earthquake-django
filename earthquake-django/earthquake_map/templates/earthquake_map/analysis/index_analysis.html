@@ -48,7 +48,7 @@
     <td>Date</td>
     </tr>
 
-{% for earthquake in earthquakes.all reversed %}    
+{% for earthquake in earthquakes reversed %}    
     <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
     
     <td >{{earthquake.magnitude}}   </td>

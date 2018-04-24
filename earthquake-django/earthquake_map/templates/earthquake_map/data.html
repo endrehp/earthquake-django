@@ -1,9 +1,11 @@
 
 
 
-
+<title>SkyAlert</title>
 <h1>Upload Data</h1>
+<a target="_blank" href="http://www2.ssn.unam.mx:8080/catalogo">SSN earthquake catalog</a>
 {% load static %}
+<link href="{% static 'open-iconic/font/css/open-iconic-bootstrap.css' %}" rel='stylesheet' >
 <link type= "text/css" rel = "stylesheet"
 			  href = "{% static 'data/style.css'%}" >
 <script src="{% static 'data/script_data.js' %}"></script>  
@@ -74,10 +76,11 @@ Excel data:
 <tr id='header_row'>
     <td>Magnitude</td>
     <td>Date</td>
+    <td>Public</td>
     <td> </td>
     </tr>
 <!-- <table id='earthquake_table'> -->
-{% for earthquake in earthquakes.all reversed %}
+{% for earthquake in earthquakes reversed %}
 <!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
     
     
@@ -85,7 +88,13 @@ Excel data:
     
     <td>{{earthquake.magnitude}}   </td>
     <td>{{earthquake.title}}   </td>
-    <td class='delete-btn' onclick=delete_data(this)>Delete<label class='title_to_delete' hidden> {{earthquake.title}} </label></td>
+    <!--<span class="oi oi-circle-check"></span> -->
+    {% if earthquake.public_exists %}
+    <td><span class="oi oi-circle-check"></span></td>
+    {% else %}
+    <td> </td>
+    {% endif %}
+    <td class='delete-btn' onclick=delete_data(this)><span class="oi oi-trash"></span><label class='title_to_delete' hidden> {{earthquake.title}} </label></td>
     
         
 </tr>

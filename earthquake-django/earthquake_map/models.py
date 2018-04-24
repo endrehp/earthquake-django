@@ -10,7 +10,9 @@ class Earthquake_object(models.Model):
     magnitude = models.CharField(max_length=100, default='n/a')
     public_url = models.CharField(max_length=200, default='url0')
     private_url = models.CharField(max_length=200, default='url0')
-    public_exists = models.CharField(max_length=200, default='false')
+    public_exists = models.BooleanField(default=False)
+    closest_city = models.CharField(max_length=400, default='false')
+    distance = models.CharField(max_length=200, default='false')
     #geojson_public = models.FileField()
     #geojson_private = models.FileField()
     

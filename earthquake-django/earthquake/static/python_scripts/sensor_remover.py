@@ -4,7 +4,7 @@ import geojson
 from django.templatetags.static import static 
 import os 
 
-def remove_and_export(url, public_url, sn_list):
+def remove_and_export(url, public_url,epi_info_url, sn_list):
     print('starting remov func')
 
     with open (url, 'r') as data_file: 
@@ -14,8 +14,11 @@ def remove_and_export(url, public_url, sn_list):
         #remove sensors
         for sn in sn_list:
             data['features'] = [element for element in data['features'] if not int(element['properties']['Sn']) == int(sn)]
-            
-
+    
+    if os.path.isfile(public_url):
+                os.remove(public_url)
+                os.remove(epi_info_url)
+                
     with open(public_url, 'w') as new_file: 
         geojson.dump(data, new_file)
 

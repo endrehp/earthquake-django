@@ -4,6 +4,8 @@ from .forms import UploadFileForm
 from django.conf.urls.static import static
 from static.python_scripts.data_processing import data_processing
 from static.python_scripts import sensor_remover
+from static.python_scripts import sort_by_dates
+from static.python_scripts.is_valid_date import is_valid_date
 from static.python_scripts.export_epi_info import export_epi_info
 #from static.python_scripts.sensor_remover import export_func
 from .models import Earthquake_object
@@ -11,6 +13,7 @@ from django.core.files import File
 from django.contrib.auth.models import User
 from django.contrib import auth 
 from django.contrib.auth.decorators import login_required
+from static.python_scripts.closest_city import closest_city
 
 #from django.templatetags.static import static
 
@@ -28,34 +31,32 @@ def admin_home(request):
     return render(request, 'earthquake_map/admin_home.html')
 
 def public(request):
-    earthquakes = Earthquake_object.objects
-    print(type(earthquakes))
+    earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
     
     #only send edited earthquakes
     index_edited = []
     count = 0
-    for earthquake in earthquakes.all():
+    for earthquake in earthquakes_sorted:
         fname = 'media/public_' + earthquake.title + '.geojson'
         print(fname)
         if os.path.isfile(fname):
             index_edited.append(count)
         count += 1
     
-    print(index_edited)
-    earthquakes_edited = [Earthquake_object.objects.all()[x] for x in index_edited]
-    print(earthquakes)
-    print(earthquakes_edited)
+    
+    earthquakes_edited = [earthquakes_sorted[x] for x in index_edited]
+    
     
     return render(request, 'earthquake_map/public/index_public.html',{'earthquakes': earthquakes_edited})
 
 @login_required
 def analysis(request):
-    earthquakes = Earthquake_object.objects
-    return render(request, 'earthquake_map/analysis/index_analysis.html',{'earthquakes': earthquakes})
+    earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
+    return render(request, 'earthquake_map/analysis/index_analysis.html',{'earthquakes': earthquakes_sorted})
 
 @login_required
 def editpublic(request):
-    earthquakes = Earthquake_object.objects
+    earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
     print("kommer hit")
     if request.method == 'POST':# and request.POST['export']:# and request.POST['main_title']:
         if request.POST['action'] == "export":
@@ -64,11 +65,12 @@ def editpublic(request):
             url = request.POST['url']
             temp_title = request.POST['main_title']
             public_url = 'media/public_' + temp_title +'.geojson'
+            epi_info_url = 'media/epi_public_' + temp_title +'.json'
             sn_list = sn.split(',')
             
             #if sn_list[0] != '':
                 
-            sensor_remover.remove_and_export(url, public_url, sn_list)
+            sensor_remover.remove_and_export(url, public_url,epi_info_url ,sn_list)
             print("kjørte remove and export")
             
             
@@ -76,16 +78,17 @@ def editpublic(request):
             if request.POST['epi_speed'] and request.POST['epi_delay']:
                 export_epi_info(request.POST['epi_speed'], request.POST['epi_delay'], temp_title)
             
-            #earthquake = Earthquake_object.objects.all().filter(title=temp_title).update(public_exists = "true")
+            earthquake = Earthquake_object.objects.all().filter(title=temp_title).update(public_exists = True)
             
+            earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
             #earthquakes = Earthquake_object.objects
-            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes, 'message': 'export successful'})
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes_sorted, 'message': 'export successful'})
 #else: 
 			#    return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
         elif request.POST['action'] == "undo":
             temp_title = request.POST['main_title']
             sensor_remover.undo_func(temp_title)
-            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes_sorted})
         #elif request.POST['action'] == "remove": 
          #   if (request.POST['serial_number'] and request.POST['url']):
                 
@@ -95,37 +98,40 @@ def editpublic(request):
              #   return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
                 # add warning message? 
         else: 
-            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+            return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes_sorted})
     else: 
-        return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes})
+        return render(request, 'earthquake_map/editpublic/index.html',{'earthquakes': earthquakes_sorted})
 
 @login_required
 def data(request):
-    earthquakes = Earthquake_object.objects
+    earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
     if request.method == 'POST':
-        if request.POST['title'] and request.FILES['excel_data']:
-            
+        if request.POST['title'] and request.FILES['excel_data'] and request.POST['epi_lon'] and request.POST['epi_lat']:
             
             title = request.POST['title']
             #excel_data = request.POST['excel_data']
+            if is_valid_date(title):
             
-            
-            #earthquake.magnitude = request.POST['magnitude']
-            public_url = 'media/public_' + title + '.geojson'
-            private_url = 'media/private_' + title + '.geojson'
-            #earthquake.geojson_public = request.FILES['excel_data']
-            
-            magnitude = request.POST['magnitude']
-            epi_lon = float(request.POST['epi_lon'])
-            epi_lat = float(request.POST['epi_lat'])
-            
-            earthquake = Earthquake_object(title=title, public_url=public_url, private_url=private_url, magnitude=magnitude, epi_lon=epi_lon, epi_lat=epi_lat)
-            
-            data_processing(request.FILES['excel_data'], title, epi_lon, epi_lat)
-            
-            earthquake.save() #inserts into database      
-            earthquakes = Earthquake_object.objects
-            return render(request, 'earthquake_map/data.html', {'message': 'the file is uploaded successfully', 'earthquakes': earthquakes})
+                #earthquake.magnitude = request.POST['magnitude']
+                public_url = 'media/public_' + title + '.geojson'
+                private_url = 'media/private_' + title + '.geojson'
+                #earthquake.geojson_public = request.FILES['excel_data']
+
+                magnitude = request.POST['magnitude']
+                epi_lon = float(request.POST['epi_lon'])
+                epi_lat = float(request.POST['epi_lat'])
+                city, distance = closest_city((epi_lat, epi_lon))
+
+                earthquake = Earthquake_object(title=title, public_url=public_url, private_url=private_url, magnitude=magnitude, epi_lon=epi_lon, epi_lat=epi_lat, closest_city=city, distance=distance)
+
+                data_processing(request.FILES['excel_data'], title, epi_lon, epi_lat)
+
+
+                earthquake.save() #inserts into database      
+                earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
+                return render(request, 'earthquake_map/data.html', {'message': 'the file is uploaded successfully', 'earthquakes': earthquakes_sorted})
+            else:
+                return render(request, 'earthquake_map/data.html', {'message': 'Error: not a valid date', 'earthquakes': earthquakes_sorted})
         
         elif request.POST['delete_title']:
             print(request.POST['delete_title'])
@@ -149,17 +155,19 @@ def data(request):
             os.remove(epicenter_url)
             
 
-            earthquakes = Earthquake_object.objects
-            return render(request, 'earthquake_map/data.html', {'message': 'the files were deleted', 'earthquakes': earthquakes})
+            earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
+            
+            return render(request, 'earthquake_map/data.html', {'message': 'the files were deleted', 'earthquakes': earthquakes_sorted})
         
 
             
         else:
-            return render(request, 'earthquake_map/data.html', {'error': 'one of the required items are missing','earthquakes': earthquakes})    
+            return render(request, 'earthquake_map/data.html', {'error': 'one of the required items are missing','earthquakes': earthquakes_sorted})    
     else:
         if Earthquake_object.objects:
+            earthquakes_sorted = sort_by_dates.sort_by_dates(Earthquake_object.objects)
             
-            return render(request, 'earthquake_map/data.html', {'earthquakes': earthquakes})
+            return render(request, 'earthquake_map/data.html', {'earthquakes': earthquakes_sorted})
         else:
             return render(request, 'earthquake_map/data.html')
 
