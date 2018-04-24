@@ -59,8 +59,6 @@ def editpublic(request):
     if request.method == 'POST':# and request.POST['export']:# and request.POST['main_title']:
         if request.POST['action'] == "export":
             #if (request.POST['export'] and request.POST['main_title']):
-            print("exporting")
-            print("steg3")
             sn = request.POST['serial_number']
             url = request.POST['url']
             temp_title = request.POST['main_title']

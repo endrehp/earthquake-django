@@ -392,6 +392,11 @@ function export_function() {
 
 }
 
+function undo_function() {
+    hidden_sensors.splice(-1,1)
+    document.getElementById('update-layer').click();
+}
+
 /*
 function remove_and_export(export_callback) {
     document.getElementById('remove').click(); 
