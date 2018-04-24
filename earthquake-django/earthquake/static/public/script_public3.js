@@ -45,7 +45,6 @@ map.on('load', function() {
     
     getEpiInfo(epi_info_url)
     
-    speed = document.getElementById('speed').value;
     add_data()
     });
     
@@ -247,4 +246,18 @@ function select_earthquake(e) {
     setEndTime();
     
     document.getElementById('load').click()
+};
+
+function speed_x(e) {
+    speed = Number(e.innerText.slice(1))
+    //console.log(speed)
+    for (var i = 0; i < document.getElementsByClassName('speed_col').length; i++) {
+        document.getElementsByClassName('speed_col')[i].style.background = 'white';
+        document.getElementsByClassName('speed_col')[i].style.color = 'black';
+    };
+    
+    e.style.color='white';
+    e.style.background='black';
+    document.getElementById('play-btn').click();
+    document.getElementById('play-btn').click();
 };

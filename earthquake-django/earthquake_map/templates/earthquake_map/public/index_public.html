@@ -22,7 +22,7 @@
   
 	
 
-<script src="{% static 'public/script_public2.js' %}"></script>  
+<script src="{% static 'public/script_public3.js' %}"></script>  
 <div class='container' ></div>  
 
 
@@ -37,7 +37,7 @@
 <a id='home_button' href="{% url 'login' %}">Admin</a>
 {% endif %}
     
-<button class="btn"><i class="ion-ios-plus-outline"></i></button>
+<button id='play-btn' class="btn"><i class="ion-ios-plus-outline"></i></button>
 <button class="btn-pause"><i class="ion-ios-plus-outline"></i></button>
 <button class="btn-reset"><i class="ion-ios-plus-outline"><i class="material-icons" id  ="reload" style="font-size:28px;color:#555" >rotate_left</i></i></button>
 <div class='session' id='sliderbar'>
@@ -76,11 +76,17 @@
 
 </div>
     
-
-<form name="speedinput">
-<h1>Speed</h1>
-<input id='speed' type="number" name="speed" value="10", min="1", max="20" >    
-</form>
+<table id='speed_selection'>
+    
+    <tr>Speed</tr>
+    <tr class='speed_row'>
+    <td class='speed_col' id='x1' onclick="speed_x(this)">x1</td>
+    <td class='speed_col' id='x5' onclick="speed_x(this)">x5</td>
+    <td class='speed_col' id='x10' onclick="speed_x(this)" style="background-color:black;color: white" >x10</td>
+    <td class='speed_col' id='x20' onclick="speed_x(this)">x20</td>
+    </tr>
+    
+    </table>
     
 	
 
