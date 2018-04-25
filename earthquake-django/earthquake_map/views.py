@@ -71,7 +71,7 @@ def editpublic(request):
             #if sn_list[0] != '':
                 
             sensor_remover.remove_and_export(url, public_url,epi_info_url ,sn_list)
-            print("kjørte remove and export")
+            print("kjrte remove and export")
             
             
             #sensor_remover.export_func(temp_title)

@@ -56,18 +56,21 @@ document.getElementById('slider').addEventListener('input', function(e) {
 });
 
 
-document.querySelector('.btn-pause').addEventListener('click', function() { 
+document.getElementById('stop').addEventListener('click', function() {
     if (l > 0) {
-        pause();}});
+    reset();
+    document.getElementById('play-pause').innerHTML= 'Play';
+    }});
 
-document.querySelector('.btn-reset').addEventListener('click', function() {
-    if (l > 0) {
-    reset();}});
-
-document.querySelector('.btn').addEventListener('click', function() {
-    if (l > 0 && play == false ){
-    play_b();} else if (l>0 && play == true){
+document.getElementById('play-pause').addEventListener('click', function() {
+  if (l > 0 && play == false ){
+        play_b();
+        document.getElementById('play-pause').innerHTML= 'Pause'; //'<i class="ion-ios-plus-outline"></i>';
+    }
+    
+    else if (l>0 && play == true){
 		pause();
+	   document.getElementById('play-pause').innerHTML= 'Play';//'<i class="ion-ios-plus-outline"></i>';
 	}});
 
 });
@@ -269,6 +272,6 @@ function speed_x(e) {
     
     e.style.color='white';
     e.style.background='black';
-    document.getElementById('play-btn').click();
-    document.getElementById('play-btn').click();
+    document.getElementById('play-pause').click();
+    document.getElementById('play-pause').click();
 };
