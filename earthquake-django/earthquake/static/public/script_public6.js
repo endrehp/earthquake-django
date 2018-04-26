@@ -249,10 +249,10 @@ function select_earthquake(e) {
     
     e.style.background = 'black';
     e.style.color = 'white';
-    e.getElementsByClassName('table_row')[0].style.background = 'black';
-    e.getElementsByClassName('table_row')[1].style.background = 'black';
-    e.getElementsByClassName('table_row')[0].style.color = 'white';
-    e.getElementsByClassName('table_row')[1].style.color = 'white';
+    //e.getElementsByClassName('table_row')[0].style.background = 'black';
+    //e.getElementsByClassName('table_row')[1].style.background = 'black';
+    //e.getElementsByClassName('table_row')[0].style.color = 'white';
+    //e.getElementsByClassName('table_row')[1].style.color = 'white';
     //e.innerHTML.style.color = 'white';
     console.log(e.getElementsByClassName('table_row'))
     title = e.getElementsByClassName('title')[0].innerText;

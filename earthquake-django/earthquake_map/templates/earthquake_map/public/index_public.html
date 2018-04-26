@@ -13,14 +13,14 @@
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link type="text/css" rel="stylesheet" href="{% static 'public/style_public2.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'public/style_public3.css' %}">
 </head>
 
 <body>
     
 <div id='map'></div>
     
-<script src="{% static 'public/script_public5.js' %}"></script>  
+<script src="{% static 'public/script_public6.js' %}"></script>  
 
 <div class='container' ></div>  
     
@@ -38,31 +38,22 @@
 <div style='overflow-y:auto;'>
 <table class="w3-table w3-striped" style = "width:200px">
 <tr id='header_row'>
-    <td>Magnitude</td>
-    <td>Date</td>
+    <th>Magnitude</th>
+    <th>Date</th>
     </tr>
 <!-- <table id='earthquake_table'> -->
 {% for earthquake in earthquakes reversed %}
 <!--    <tr class="date w3-bar-item w3-button w3-hover-black" onclick="select_earthquake(this)"> </tr> -->
     
     
-    <tr class='table_row' id={{earthquake.id}} onclick="select_earthquake(this)">
+    <tr class='table_row w3-button w3-hover-black' id={{earthquake.id}} onclick="select_earthquake(this)">
     
-    <td class='magnitude date w3-button w3-hover-black"' style="font-size: 14">{{earthquake.magnitude}}   </td>
+    <td class='magnitude"' style="font-size: 14">{{earthquake.magnitude}}   </td>
     <td>
-    <table class='inner_table' style="border: none;padding: none, ">
-    <tr class='table_row'>
-    <td class='title' style="font-size:10">{{earthquake.title}} </td>
+    <div class='title' style="font-size:10">{{earthquake.title}} </div>    
+    <div class='city_info' style="font-size:6">{{earthquake.distance}} km from {{earthquake.closest_city}}</div>
     </tr>
-    <tr class='table_row'>
-    <td class='city_info' style="font-size:6">{{earthquake.distance}} km from {{earthquake.closest_city}}</td>
-    </tr>
-        </table>
-    </td>
-
-    <td hidden>  <label class='public_url'> {{earthquake.public_url}} </label> </td>
-
-</tr>
+    
 
 {% endfor %}
 </table>
